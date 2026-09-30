@@ -1,10 +1,13 @@
 {
   "name": "barbearia-",
   "version": "1.0.0",
-  "description": "",
-  "main": "src/server.js",
+  "description": "Página de agendamento online para cabeleireiro/barbearia (Cloudflare Pages + D1)",
+  "type": "module",
   "scripts": {
-    "start": "node src/server.js",
+    "dev": "wrangler pages dev --local --live-reload",
+    "db:migrate:local": "wrangler d1 migrations apply barbearia-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply barbearia-db --remote",
+    "deploy": "wrangler pages deploy public",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,10 +23,9 @@
   "homepage": "https://github.com/MaiconTatuadorr/Barbearia-#readme",
   "dependencies": {
     "bcryptjs": "^3.0.3",
-    "better-sqlite3": "^13.0.3",
-    "dotenv": "^18.0.4",
-    "express": "^5.2.1",
-    "express-session": "^1.19.0",
-    "nanoid": "^3.3.19"
+    "hono": "^4.13.12"
+  },
+  "devDependencies": {
+    "wrangler": "^4.144.0"
   }
 }

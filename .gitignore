@@ -1,5 +1,4 @@
 node_modules/
-data/*.db
-data/*.db-journal
-.env
+.wrangler/
+.dev.vars
 *.log
