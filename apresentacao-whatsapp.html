@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Agenda Online para Barbearias</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0a0a0b;
+    --panel: #16161a;
+    --panel-2: #1e1e23;
+    --border: #2b2b31;
+    --gold: #c9a35a;
+    --gold-light: #f0d8a0;
+    --gold-soft: rgba(201, 163, 90, 0.14);
+    --gold-gradient: linear-gradient(135deg, #f0d8a0 0%, #c9a35a 45%, #8e6d33 100%);
+    --text: #f5f2ec;
+    --text-dim: #a7a39c;
+    --whatsapp: #25d366;
+    --whatsapp-dark: #1da851;
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-sans: 'Inter', 'Segoe UI', Arial, sans-serif;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background:
+      radial-gradient(ellipse 900px 500px at 50% -10%, rgba(201, 163, 90, 0.12) 0%, transparent 60%),
+      radial-gradient(circle at top, #19191d 0%, #0a0a0b 55%);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 640px; margin: 0 auto; padding: 36px 18px 60px; }
+
+  .hero { text-align: center; margin-bottom: 34px; }
+  .hero .scissors { font-size: 46px; display: block; margin-bottom: 12px; filter: drop-shadow(0 0 16px rgba(201,163,90,0.55)); }
+  .hero .tag {
+    display: inline-block;
+    background: var(--gold-soft);
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-family: var(--font-serif);
+    font-weight: 800;
+    font-size: 2.1rem;
+    line-height: 1.2;
+    margin: 0 0 14px;
+    background: var(--gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p.subtitle {
+    color: var(--text-dim);
+    font-size: 1.02rem;
+    line-height: 1.55;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .cta-wrap { text-align: center; margin: 28px 0 40px; }
+  .btn-wa {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--whatsapp) 0%, var(--whatsapp-dark) 100%);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 16px 30px;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 16px 34px -12px rgba(37, 211, 102, 0.6);
+    animation: pulseWa 2.4s ease-in-out infinite;
+  }
+  @keyframes pulseWa {
+    0%, 100% { box-shadow: 0 16px 34px -12px rgba(37, 211, 102, 0.6); }
+    50% { box-shadow: 0 16px 40px -6px rgba(37, 211, 102, 0.9); }
+  }
+  .cta-wrap .mini-note { display:block; margin-top: 12px; color: var(--text-dim); font-size: 0.8rem; }
+
+  /* Mockup de telefone com o fluxo de agendamento */
+  .phone {
+    max-width: 300px;
+    margin: 0 auto 40px;
+    border: 10px solid #111;
+    border-radius: 34px;
+    background: var(--panel);
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.7), 0 0 0 1px var(--border);
+    overflow: hidden;
+  }
+  .phone .notch { width: 90px; height: 18px; background: #111; border-radius: 0 0 14px 14px; margin: 0 auto; }
+  .phone-screen { padding: 18px 16px 22px; }
+  .phone-screen .mini-brand { text-align: center; margin-bottom: 14px; }
+  .phone-screen .mini-brand span.ic { font-size: 22px; }
+  .phone-screen .mini-brand h3 {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    margin: 6px 0 0;
+    background: var(--gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .mini-card {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 0.78rem;
+  }
+  .mini-card.selected { border-color: var(--gold); background: var(--gold-soft); }
+  .mini-card .row { display: flex; justify-content: space-between; align-items: center; }
+  .mini-card .row b { font-weight: 600; }
+  .mini-card .row span.price { color: var(--gold-light); font-weight: 700; }
+  .mini-days { display: flex; gap: 6px; margin: 10px 0; }
+  .mini-day {
+    flex: 1; text-align: center; padding: 7px 0; border-radius: 8px;
+    background: var(--panel-2); border: 1px solid var(--border); font-size: 0.68rem;
+  }
+  .mini-day.sel { border-color: var(--gold); background: var(--gold-soft); color: var(--gold-light); font-weight: 700; }
+  .mini-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
+  .mini-slot {
+    text-align: center; padding: 7px 0; border-radius: 8px; font-size: 0.7rem;
+    background: var(--panel-2); border: 1px solid var(--border);
+  }
+  .mini-slot.sel { background: var(--gold-gradient); color: #1a1400; font-weight: 700; border-color: var(--gold); }
+  .mini-btn {
+    margin-top: 12px; text-align: center; padding: 10px; border-radius: 999px;
+    background: var(--gold-gradient); color: #1a1400; font-weight: 700; font-size: 0.78rem;
+  }
+
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    text-align: center;
+    color: var(--gold-light);
+    margin: 0 0 22px;
+  }
+
+  .features {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .feature {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: linear-gradient(180deg, var(--panel) 0%, rgba(22,22,26,0.9) 100%);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 18px;
+    box-shadow: 0 12px 30px -20px rgba(0,0,0,0.7);
+  }
+  .feature .emoji { font-size: 1.5rem; line-height: 1; margin-top: 2px; }
+  .feature h4 { margin: 0 0 4px; font-size: 0.98rem; color: var(--text); }
+  .feature p { margin: 0; color: var(--text-dim); font-size: 0.85rem; line-height: 1.45; }
+
+  .steps-list {
+    counter-reset: step;
+    margin-bottom: 40px;
+  }
+  .step-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 14px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .step-item:last-child { border-bottom: none; }
+  .step-item .num {
+    counter-increment: step;
+    flex: 0 0 auto;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--gold-soft);
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-serif); font-weight: 700;
+  }
+  .step-item .num::before { content: counter(step); }
+  .step-item h4 { margin: 0 0 4px; font-size: 0.95rem; }
+  .step-item p { margin: 0; color: var(--text-dim); font-size: 0.85rem; line-height: 1.45; }
+
+  .price-box {
+    text-align: center;
+    background: linear-gradient(180deg, var(--gold-soft), transparent);
+    border: 1px solid var(--gold);
+    border-radius: 18px;
+    padding: 28px 20px;
+    margin-bottom: 40px;
+  }
+  .price-box .big {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 800;
+    background: var(--gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0 0 6px;
+  }
+  .price-box p { margin: 0; color: var(--text-dim); font-size: 0.9rem; }
+
+  .divider-gold {
+    width: 64px; height: 2px; margin: 0 auto 22px;
+    background: var(--gold-gradient); border-radius: 2px; opacity: 0.85;
+  }
+
+  .footer-cta {
+    text-align: center;
+    padding-top: 10px;
+  }
+  .footer-note {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    margin-top: 30px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <span class="scissors">✂️</span>
+    <span class="tag">Novidade para barbearias e salões</span>
+    <h1>Agenda Online para Barbearias</h1>
+    <p class="subtitle">
+      Sua própria página de agendamento — o cliente entra pelo link, escolhe o dia e o
+      horário sozinho, e você recebe tudo certinho. Sem planilha, sem confusão de horário,
+      sem mensalidade de servidor.
+    </p>
+  </div>
+
+  <div class="cta-wrap">
+    <a class="btn-wa" id="ctaTop" href="#" target="_blank" rel="noopener">📲 Quero minha página grátis</a>
+    <span class="mini-note">É só clicar e chamar no WhatsApp</span>
+  </div>
+
+  <!-- Mockup visual do app -->
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="phone-screen">
+      <div class="mini-brand">
+        <span class="ic">✂️</span>
+        <h3>Studio do Cabeleireiro</h3>
+      </div>
+
+      <div class="mini-card selected">
+        <div class="row"><b>Corte + Barba</b><span class="price">R$ 60</span></div>
+      </div>
+      <div class="mini-card">
+        <div class="row"><b>Corte de Cabelo</b><span class="price">R$ 40</span></div>
+      </div>
+
+      <div class="mini-days">
+        <div class="mini-day">TER<br>06</div>
+        <div class="mini-day sel">QUA<br>07</div>
+        <div class="mini-day">QUI<br>08</div>
+        <div class="mini-day">SEX<br>09</div>
+      </div>
+
+      <div class="mini-slots">
+        <div class="mini-slot">09:00</div>
+        <div class="mini-slot sel">10:30</div>
+        <div class="mini-slot">14:00</div>
+        <div class="mini-slot">15:00</div>
+        <div class="mini-slot">16:30</div>
+        <div class="mini-slot">18:00</div>
+      </div>
+
+      <div class="mini-btn">Confirmar agendamento</div>
+    </div>
+  </div>
+
+  <div class="divider-gold"></div>
+  <h2 class="section-title">O que sua página vai ter</h2>
+  <div class="features">
+    <div class="feature">
+      <span class="emoji">🔗</span>
+      <div><h4>Link exclusivo e personalizado</h4><p>Com o nome, endereço, WhatsApp e Instagram da sua barbearia.</p></div>
+    </div>
+    <div class="feature">
+      <span class="emoji">📅</span>
+      <div><h4>Cliente agenda sozinho</h4><p>Escolhe o serviço, o dia e o horário livre — sem precisar te chamar antes.</p></div>
+    </div>
+    <div class="feature">
+      <span class="emoji">🧭</span>
+      <div><h4>Painel completo pra você</h4><p>Controle sua agenda, horários de funcionamento, folgas e serviços quando quiser.</p></div>
+    </div>
+    <div class="feature">
+      <span class="emoji">📲</span>
+      <div><h4>Aviso direto no WhatsApp</h4><p>Cada novo agendamento pode ser enviado direto pra você, sem precisar ficar checando painel.</p></div>
+    </div>
+    <div class="feature">
+      <span class="emoji">🔒</span>
+      <div><h4>Sem furo de agenda</h4><p>O sistema nunca deixa dois clientes marcarem o mesmo horário.</p></div>
+    </div>
+    <div class="feature">
+      <span class="emoji">🎨</span>
+      <div><h4>Visual premium</h4><p>Design elegante em preto e dourado, com a cara de um negócio profissional.</p></div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Como funciona</h2>
+  <div class="steps-list">
+    <div class="step-item">
+      <span class="num"></span>
+      <div><h4>Você me manda seus dados</h4><p>Nome da barbearia, serviços, preços e horários de funcionamento.</p></div>
+    </div>
+    <div class="step-item">
+      <span class="num"></span>
+      <div><h4>Eu configuro sua página</h4><p>Deixo tudo pronto com a sua identidade, em poucos minutos.</p></div>
+    </div>
+    <div class="step-item">
+      <span class="num"></span>
+      <div><h4>Você recebe o link</h4><p>É só compartilhar com seus clientes e começar a receber agendamentos.</p></div>
+    </div>
+  </div>
+
+  <div class="price-box">
+    <div class="big">Grátis pra começar</div>
+    <p>Sem mensalidade de servidor — sua página roda na nuvem sem custo de hospedagem.</p>
+  </div>
+
+  <div class="footer-cta">
+    <a class="btn-wa" id="ctaBottom" href="#" target="_blank" rel="noopener">📲 Quero minha página grátis</a>
+  </div>
+
+  <p class="footer-note">Feito especialmente para barbearias, salões e cabeleireiros autônomos.</p>
+</div>
+
+<script>
+  (function () {
+    var numero = '5551995235667';
+    var mensagem = encodeURIComponent(
+      'Olá! Vi a demonstração da Agenda Online para Barbearias e quero minha página de agendamento grátis.'
+    );
+    var link = 'https://wa.me/' + numero + '?text=' + mensagem;
+    document.getElementById('ctaTop').href = link;
+    document.getElementById('ctaBottom').href = link;
+  })();
+</script>
+</body>
+</html>
