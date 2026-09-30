@@ -217,10 +217,14 @@
       const msg = encodeURIComponent(
         `Olá! Acabei de agendar: ${result.service} em ${fmtDateLabel(result.date)} às ${result.time}. Nome: ${name}.`
       );
-      el('whatsappConfirm').href = waNumber
-        ? `https://wa.me/${waNumber}?text=${msg}`
-        : '#';
-      if (!waNumber) el('whatsappConfirm').classList.add('hidden');
+      const waCta = document.querySelector('.whatsapp-cta');
+      if (waNumber) {
+        el('whatsappConfirm').href = `https://wa.me/${waNumber}?text=${msg}`;
+        el('whatsappConfirm').classList.remove('hidden');
+        waCta.classList.remove('hidden');
+      } else {
+        waCta.classList.add('hidden');
+      }
 
       document.querySelectorAll('.step').forEach((s) => s.classList.add('hidden'));
       el('step-success').classList.remove('hidden');

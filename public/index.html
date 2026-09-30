@@ -11,6 +11,7 @@
   <div class="brand">
     <span class="scissors">✂️</span>
     <h1 id="barberName">Carregando...</h1>
+    <div class="divider"></div>
     <p id="barberAddress"></p>
     <div class="contacts" id="barberContacts"></div>
   </div>
@@ -70,15 +71,24 @@
     <!-- Sucesso -->
     <div class="card step hidden" id="step-success">
       <div class="success-icon">✅</div>
-      <h2 style="text-align:center;">Agendamento confirmado!</h2>
+      <h2 style="text-align:center; font-family: var(--font-serif);">Agendamento confirmado!</h2>
       <div class="summary-row"><span class="label">Serviço</span><span id="okService">-</span></div>
       <div class="summary-row"><span class="label">Data</span><span id="okDate">-</span></div>
       <div class="summary-row"><span class="label">Horário</span><span id="okTime">-</span></div>
-      <p class="footer-note">Guarde o link abaixo caso precise cancelar seu horário.</p>
-      <div class="link-box"><code id="cancelLink"></code></div>
-      <div class="actions">
-        <a class="btn" id="whatsappConfirm" target="_blank">Avisar no WhatsApp</a>
-        <button class="btn ghost" id="newBookingBtn">Fazer novo agendamento</button>
+
+      <div class="whatsapp-cta" style="margin-top:22px;">
+        <p>Envie a confirmação direto para o profissional:</p>
+        <a class="btn btn-whatsapp" id="whatsappConfirm" target="_blank" rel="noopener">
+          <span class="wa-icon">📲</span> Enviar confirmação no WhatsApp
+        </a>
+      </div>
+
+      <div class="cancel-link-block">
+        <p class="footer-note">Guarde o link abaixo caso precise cancelar seu horário.</p>
+        <div class="link-box"><code id="cancelLink"></code></div>
+        <div class="actions">
+          <button class="btn ghost" id="newBookingBtn">Fazer novo agendamento</button>
+        </div>
       </div>
     </div>
   </div>
