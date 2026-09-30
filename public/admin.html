@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Painel do Cabeleireiro</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<!-- Tela de login -->
+<div class="wrap login-box hidden" id="loginScreen">
+  <div class="brand">
+    <span class="scissors">✂️</span>
+    <h1>Painel do Cabeleireiro</h1>
+  </div>
+  <div class="card">
+    <h2>Entrar</h2>
+    <div id="loginAlert"></div>
+    <label for="loginPassword">Senha de acesso</label>
+    <input type="password" id="loginPassword" placeholder="Sua senha" />
+    <div class="actions"><button class="btn" id="loginBtn" style="width:100%">Entrar</button></div>
+  </div>
+</div>
+
+<!-- Tela de configuração inicial -->
+<div class="wrap login-box hidden" id="setupScreen">
+  <div class="brand">
+    <span class="scissors">✂️</span>
+    <h1>Bem-vindo!</h1>
+    <p>Vamos configurar sua página de agendamento.</p>
+  </div>
+  <div class="card">
+    <h2>Configuração inicial</h2>
+    <div id="setupAlert"></div>
+    <label for="setupName">Nome da barbearia / seu nome</label>
+    <input type="text" id="setupName" placeholder="Ex: João Cabeleireiro" />
+    <label for="setupPassword">Crie uma senha de acesso ao painel</label>
+    <input type="password" id="setupPassword" placeholder="Mínimo 4 caracteres" />
+    <div class="actions"><button class="btn" id="setupBtn" style="width:100%">Criar minha página</button></div>
+  </div>
+</div>
+
+<!-- Painel principal -->
+<div class="admin-shell hidden" id="adminShell">
+  <div class="admin-top">
+    <h1 id="adminTitle">Painel</h1>
+    <div class="actions" style="margin-top:0">
+      <a class="btn ghost" href="/" target="_blank">Ver página do cliente</a>
+      <button class="btn ghost" id="logoutBtn">Sair</button>
+    </div>
+  </div>
+
+  <div class="link-box">
+    <span>🔗 Link para seus clientes agendarem:</span>
+    <code id="shareLink"></code>
+    <button class="btn secondary" id="copyLinkBtn" type="button">Copiar</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="agenda">Agenda</button>
+    <button class="tab-btn" data-tab="horarios">Horários</button>
+    <button class="tab-btn" data-tab="bloqueios">Folgas</button>
+    <button class="tab-btn" data-tab="servicos">Serviços</button>
+    <button class="tab-btn" data-tab="config">Configurações</button>
+  </div>
+
+  <!-- Aba Agenda -->
+  <div class="tab-panel active" id="tab-agenda">
+    <div class="card">
+      <h2>Novo agendamento manual</h2>
+      <div class="inline-form">
+        <div><label>Data</label><input type="date" id="manDate" /></div>
+        <div><label>Horário</label><input type="time" id="manTime" /></div>
+        <div><label>Serviço</label><select id="manService"></select></div>
+        <div><label>Cliente</label><input type="text" id="manName" placeholder="Nome" /></div>
+        <div><label>Telefone</label><input type="text" id="manPhone" placeholder="Telefone" /></div>
+        <div><button class="btn" id="manAddBtn">Adicionar</button></div>
+      </div>
+      <div id="manAlert"></div>
+    </div>
+
+    <div class="card">
+      <h2>Agendamentos</h2>
+      <div class="date-filter">
+        <label style="margin:0">De <input type="date" id="filterFrom" /></label>
+        <label style="margin:0">Até <input type="date" id="filterTo" /></label>
+        <button class="btn ghost" id="filterTodayBtn">Hoje</button>
+        <button class="btn ghost" id="filterWeekBtn">Próximos 7 dias</button>
+      </div>
+      <div id="apptTableWrap"><div class="loading">Carregando...</div></div>
+    </div>
+  </div>
+
+  <!-- Aba Horários -->
+  <div class="tab-panel" id="tab-horarios">
+    <div class="card">
+      <h2>Horário de funcionamento semanal</h2>
+      <div id="whAlert"></div>
+      <div id="weekdaysWrap"></div>
+      <div class="actions"><button class="btn" id="saveHoursBtn">Salvar horários</button></div>
+    </div>
+  </div>
+
+  <!-- Aba Bloqueios -->
+  <div class="tab-panel" id="tab-bloqueios">
+    <div class="card">
+      <h2>Bloquear um dia (folga, feriado, viagem...)</h2>
+      <div class="inline-form">
+        <div><label>Data</label><input type="date" id="blockDate" /></div>
+        <div><label>Motivo (opcional)</label><input type="text" id="blockReason" placeholder="Ex: Feriado" /></div>
+        <div><button class="btn" id="addBlockBtn">Bloquear</button></div>
+      </div>
+      <div id="blockAlert"></div>
+      <table id="blockTable">
+        <thead><tr><th>Data</th><th>Motivo</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Aba Serviços -->
+  <div class="tab-panel" id="tab-servicos">
+    <div class="card">
+      <h2>Novo serviço</h2>
+      <div class="inline-form">
+        <div><label>Nome</label><input type="text" id="svcName" placeholder="Ex: Corte" /></div>
+        <div><label>Duração (min)</label><input type="number" id="svcDuration" value="30" /></div>
+        <div><label>Preço (R$)</label><input type="number" id="svcPrice" step="0.01" placeholder="opcional" /></div>
+        <div><button class="btn" id="addSvcBtn">Adicionar</button></div>
+      </div>
+      <div id="svcAlert"></div>
+      <table id="svcTable">
+        <thead><tr><th>Serviço</th><th>Duração</th><th>Preço</th><th>Ativo</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Aba Configurações -->
+  <div class="tab-panel" id="tab-config">
+    <div class="card">
+      <h2>Dados exibidos aos clientes</h2>
+      <div id="cfgAlert"></div>
+      <label>Nome da barbearia</label>
+      <input type="text" id="cfgName" />
+      <label>Endereço</label>
+      <input type="text" id="cfgAddress" />
+      <label>Telefone</label>
+      <input type="text" id="cfgPhone" />
+      <label>WhatsApp (só números, com DDD e país)</label>
+      <input type="text" id="cfgWhatsapp" placeholder="Ex: 5551999999999" />
+      <label>Instagram</label>
+      <input type="text" id="cfgInstagram" placeholder="Ex: @minhabarbearia" />
+      <label>Duração padrão do intervalo de horários (min)</label>
+      <input type="number" id="cfgSlotStep" />
+      <label>Antecedência mínima para agendar hoje (min)</label>
+      <input type="number" id="cfgMinNotice" />
+      <label>Quantos dias à frente o cliente pode agendar</label>
+      <input type="number" id="cfgHorizon" />
+      <div class="actions"><button class="btn" id="saveCfgBtn">Salvar</button></div>
+    </div>
+
+    <div class="card">
+      <h2>Alterar senha do painel</h2>
+      <div id="pwAlert"></div>
+      <label>Senha atual</label>
+      <input type="password" id="pwCurrent" />
+      <label>Nova senha</label>
+      <input type="password" id="pwNew" />
+      <div class="actions"><button class="btn" id="savePwBtn">Alterar senha</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>
