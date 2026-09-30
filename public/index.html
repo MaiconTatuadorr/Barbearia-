@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Agendar horário</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <span class="scissors">✂️</span>
+    <h1 id="barberName">Carregando...</h1>
+    <p id="barberAddress"></p>
+    <div class="contacts" id="barberContacts"></div>
+  </div>
+
+  <div class="steps">
+    <div class="dot" data-step="1"></div>
+    <div class="dot" data-step="2"></div>
+    <div class="dot" data-step="3"></div>
+    <div class="dot" data-step="4"></div>
+  </div>
+
+  <div id="loadingInfo" class="loading">Carregando informações...</div>
+
+  <div id="flow" class="hidden">
+
+    <!-- Passo 1: Serviço -->
+    <div class="card step" id="step-1">
+      <h2>1. Escolha o serviço</h2>
+      <div class="service-list" id="serviceList"></div>
+    </div>
+
+    <!-- Passo 2: Data -->
+    <div class="card step hidden" id="step-2">
+      <h2>2. Escolha o dia</h2>
+      <div class="day-scroller" id="dayScroller"></div>
+    </div>
+
+    <!-- Passo 3: Horário -->
+    <div class="card step hidden" id="step-3">
+      <h2>3. Escolha o horário <span class="muted" id="selectedDateLabel"></span></h2>
+      <div id="slotsArea"><div class="empty-msg">Selecione um dia primeiro.</div></div>
+    </div>
+
+    <!-- Passo 4: Dados -->
+    <div class="card step hidden" id="step-4">
+      <h2>4. Seus dados</h2>
+      <div id="formAlert"></div>
+      <label for="clientName">Nome completo</label>
+      <input type="text" id="clientName" placeholder="Seu nome" />
+      <label for="clientPhone">WhatsApp / Telefone</label>
+      <input type="tel" id="clientPhone" placeholder="(51) 90000-0000" />
+      <label for="clientNotes">Observações (opcional)</label>
+      <textarea id="clientNotes" placeholder="Alguma preferência ou observação?"></textarea>
+
+      <div class="card" style="margin-top:16px; background: var(--panel-2);">
+        <div class="summary-row"><span class="label">Serviço</span><span id="sumService">-</span></div>
+        <div class="summary-row"><span class="label">Data</span><span id="sumDate">-</span></div>
+        <div class="summary-row"><span class="label">Horário</span><span id="sumTime">-</span></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="confirmBtn">Confirmar agendamento</button>
+        <button class="btn ghost" id="backBtn">Voltar</button>
+      </div>
+    </div>
+
+    <!-- Sucesso -->
+    <div class="card step hidden" id="step-success">
+      <div class="success-icon">✅</div>
+      <h2 style="text-align:center;">Agendamento confirmado!</h2>
+      <div class="summary-row"><span class="label">Serviço</span><span id="okService">-</span></div>
+      <div class="summary-row"><span class="label">Data</span><span id="okDate">-</span></div>
+      <div class="summary-row"><span class="label">Horário</span><span id="okTime">-</span></div>
+      <p class="footer-note">Guarde o link abaixo caso precise cancelar seu horário.</p>
+      <div class="link-box"><code id="cancelLink"></code></div>
+      <div class="actions">
+        <a class="btn" id="whatsappConfirm" target="_blank">Avisar no WhatsApp</a>
+        <button class="btn ghost" id="newBookingBtn">Fazer novo agendamento</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/booking.js"></script>
+</body>
+</html>
